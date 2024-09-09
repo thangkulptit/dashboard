@@ -24,6 +24,10 @@
                           </div>
 
                         <div class="form-group" style="margin-top: 16px;">
+                            <input type="text" class="form-control" placeholder="Nhập vào tên khách hàng(@telegram)" name="customer" id="customer" required>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 16px;">
                             <button class="btn btn-primary" id="btn-add" type="submit"> Lấy Key </button>
                         </div>
                     </div>
@@ -50,6 +54,7 @@
                                         <th>Key</th>
                                         <th>Thiết bị</th>
                                         <th>Trạng thái</th>
+                                        <th>Khách hàng</th>
                                         <th>Thời gian tạo</th>
                                         <th>Action</th>
                                     </tr>
@@ -67,6 +72,7 @@
                                         @else
                                             <td><span class="badge badge-danger">Suspend</span></td>
                                         @endif
+                                        <td>{{ $row->customer }}</td>
                                         <td><b>{{ \Carbon\Carbon::parse($row->created_at)->format('H:i:s   [d/m/Y]') }}<b></td>
                                         <td>
                                            @if($row->active == 1)
@@ -115,9 +121,9 @@
             <!-- /.row-->
         </div>
     </div>
-    {{--<div id="table-paginate">
+    <div id="table-paginate" style="display: flex; align-items: center; justify-content: center;">
         {{$keyTodayRecords->links()}}
-    </div>--}}
+    </div>
 </div>
 <script>
 @stop

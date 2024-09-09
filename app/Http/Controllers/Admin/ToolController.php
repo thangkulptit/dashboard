@@ -21,6 +21,7 @@ class ToolController extends Controller
                     'game.id as game_id',
                     'game.name as name',
                     'management_tool.mac_address as mac_address',
+                    'management_tool.customer as customer',
                     'management_tool.license_key as license_key',
                     'management_tool.total_devices as total_devices',
                     'management_tool.active as active',
@@ -38,6 +39,7 @@ class ToolController extends Controller
         return view('admin.game', $data);
     }
 
+    // CONTROLLER GAME================
     public function addGame(Request $request){
         $game = new Game();
         $game->name = $request->name;
@@ -45,6 +47,15 @@ class ToolController extends Controller
         $game->save();
         return redirect()->back()->withInput()->with('success','Thêm Game thành công');
     }
+
+    public function removeGame(Request $request) {
+        $id = $request->route('id');
+        $record = Game::find($id);
+        $result = $record->delete();
+        $status = $result == true ? 'success' : 'error';
+        return redirect()->back()->withInput()->with($status, $status);
+    }
+    // CONTROLLER GAME================
 
     public function update(Request $request){
         if($request->ajax()) {
@@ -84,6 +95,7 @@ class ToolController extends Controller
         $tool->mac_address = null;
         $tool->license_key = $this->generateLicenseKey();
         $tool->total_devices = $request->total_devices;
+        $tool->customer = $request->customer;
         $tool->active = 1;
         $tool->save();
         return redirect()->back()->withInput()->with('success','Tạo key thành công');

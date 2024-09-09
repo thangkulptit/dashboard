@@ -33,8 +33,8 @@ Route::group(['namespace'=>'Admin'], function(){
         Route::post('/tool/{id}', 'ToolController@update');
         Route::get('/tool/delete/{id}', 'ToolController@remove');
 
+        Route::get('/game/delete/{id}', 'ToolController@removeGame');
         Route::get('/game', 'ToolController@getViewGame');
-
         Route::post('/game/add', 'ToolController@addGame');
     });
 });

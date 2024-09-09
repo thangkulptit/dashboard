@@ -43,6 +43,7 @@
                                                 <th>ID</th>
                                                 <th>Game</th>
                                                 <th>Tác Giả</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="content-table">
@@ -51,6 +52,10 @@
                                                 <td>{{ $game->id }}</td>
                                                 <td>{{ $game->name }}</td>
                                                 <td>{{ $game->other }}</td>
+                                                <td>
+                                                    {{-- <button class="btn btn-primary">Sửa</button> --}}
+                                                    <button class="btn btn-danger" onclick="deleteGame({{$game->id}})">Xoá</button>
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -70,4 +75,11 @@
     </div>
 </div>
 <script>
+    function deleteGame(id) {
+        var result = window.confirm('Bạn có chắc chắn muốn xoá id ' + id)
+        if (result) {
+            location.href = '/admin/game/delete/'+id
+        }
+    }
+</script>
 @stop
