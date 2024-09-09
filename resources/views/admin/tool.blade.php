@@ -43,7 +43,36 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Key mới tạo gần nhất!
+                           <div class="row">
+                            <div class="col-md-6">
+                                <i class="fa fa-align-justify"></i> Key mới tạo gần nhất!
+                                
+                            </div>
+                            <div class="col-md-3">
+
+                            </div>
+                            <div class="col-md-3">
+                                <label for="">Search Game</label>
+                                <select class="form-control" id="filter_game" name="game_id" onchange="searchGame()">
+                                    <option value=""
+                                        @if(empty($searchGame))
+                                            selected
+                                        @endif
+                                    >
+                                        All
+                                    </option>
+                                    @foreach ($games as $game)
+                                    <option value="{{$game->id}}" 
+                                        @if($searchGame == $game->id)
+                                            selected
+                                        @endif
+                                        >
+                                        {{$game->name}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                           </div>
                         </div>
                         <div class="card-body">
                             <table class="table table-responsive-sm table-bordered table-striped table-sm">
@@ -111,6 +140,27 @@
                                         });
                                       
                                     }
+
+                                    function searchGame() {
+                                        var game_id = document.getElementById("filter_game").value;
+
+                                        var currentUrl = new URL(window.location.href);
+
+                                        var searchParams = new URLSearchParams(currentUrl.search);
+
+                                        var pageParams = searchParams.get("page");
+
+                                        searchParams.set('game', game_id || "");
+
+                                        if (pageParams) {
+                                            searchParams.set('page', 1);
+                                        }
+                                        
+
+                                        var newUrl = `${currentUrl.origin}${currentUrl.pathname}?${searchParams.toString()}`;
+
+                                        window.location.href = newUrl;
+                                    }
                                 </script>
                             </table>
                         </div>
@@ -122,7 +172,7 @@
         </div>
     </div>
     <div id="table-paginate" style="display: flex; align-items: center; justify-content: center;">
-        {{$keyTodayRecords->links()}}
+        {{$keyTodayRecords->appends(request()->input())->links()}}
     </div>
 </div>
 <script>

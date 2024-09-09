@@ -12,24 +12,31 @@ use Carbon\Carbon;
 
 class ToolController extends Controller
 {
-    public function getView(){
+    public function getView(Request $request){
+        $name_id = $request->game;
         $data['games'] = Game::get();
-        $data['keyTodayRecords'] = 
-            DB::table('management_tool')
-                ->select(
-                    'management_tool.id as mt_id',
-                    'game.id as game_id',
-                    'game.name as name',
-                    'management_tool.mac_address as mac_address',
-                    'management_tool.customer as customer',
-                    'management_tool.license_key as license_key',
-                    'management_tool.total_devices as total_devices',
-                    'management_tool.active as active',
-                    'management_tool.created_at as created_at'
-                    )
-                ->join('game', 'game.id', '=', 'management_tool.game_id')
-                ->orderBy('management_tool.created_at', 'DESC')
-                ->paginate(30);
+
+        $statement = DB::table('management_tool')
+            ->select(
+                'management_tool.id as mt_id',
+                'game.id as game_id',
+                'game.name as name',
+                'management_tool.mac_address as mac_address',
+                'management_tool.customer as customer',
+                'management_tool.license_key as license_key',
+                'management_tool.total_devices as total_devices',
+                'management_tool.active as active',
+                'management_tool.created_at as created_at'
+                )
+            ->join('game', 'game.id', '=', 'management_tool.game_id')
+            ->orderBy('management_tool.created_at', 'DESC');
+        
+        if ($name_id) {
+            $statement = $statement->where('game.id', '=', $name_id);
+        }
+
+        $data['keyTodayRecords'] = $statement->paginate(20);
+        $data['searchGame'] = $name_id;
         
         return view('admin.tool', $data);
     }
