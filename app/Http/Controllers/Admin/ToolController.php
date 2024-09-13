@@ -14,7 +14,7 @@ class ToolController extends Controller
 {
     public function getView(Request $request){
         $name_id = $request->game;
-        $data['games'] = Game::get();
+        $data['games'] = Game::orderBy('created_at', 'DESC')->get();
 
         $statement = DB::table('management_tool')
             ->select(
