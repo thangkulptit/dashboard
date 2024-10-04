@@ -86,7 +86,11 @@ class LoginController extends Controller
             ]);
         }
 
-        $records = ManagementTool::where('license_key', $key)->where('active', 1)->get();
+        $records = ManagementTool::where('license_key', $key)
+            ->join('game', 'game.id', '=', 'management_tool.game_id')
+            ->where('active', 1)
+            ->where('game.name', $gameName)
+            ->get();
 
         if (count($records) < 1) {
             return response()->json([
